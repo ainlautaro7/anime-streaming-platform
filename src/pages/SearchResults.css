@@ -1,0 +1,183 @@
+.search-results-page {
+  min-height: 100vh;
+  padding-bottom: 2rem;
+  background-color: var(--bg-deep);
+}
+
+.search-results-grid {
+  /* Using AnimeGrid component styles now */
+  display: contents;
+  /* Just a wrapper */
+}
+
+/* Page Header Updates */
+.page-section-header.with-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  position: sticky;
+  top: 70px;
+  /* Adjust based on main Navbar height */
+  background-color: var(--bg-deep);
+  z-index: 100;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-top: -1rem;
+  /* Offset the padding for visual consistency */
+}
+
+.header-title-group {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.page-title span {
+  color: var(--primary);
+}
+
+/* Header Genre Filter Dropdown */
+.header-genre-filter {
+  position: relative;
+  z-index: 50;
+}
+
+.header-filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--card-bg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.header-filter-btn:hover,
+.header-filter-btn.active {
+  background-color: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.header-filter-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.header-dropdown {
+  top: calc(100% + 0.5rem);
+  left: 0;
+  width: 250px;
+  max-height: 400px;
+}
+
+/* Categories Grid */
+.genre-search-container {
+  margin-bottom: 2rem;
+  max-width: 400px;
+}
+
+.genre-search-input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.genre-search-input:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+.genre-search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.category-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--primary);
+}
+
+.category-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.category-count {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.loading-more {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.no-results {
+  text-align: center;
+  padding: 4rem 0;
+  color: var(--text-secondary);
+}
+
+.no-results p {
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+}
+
+@media (max-width: 768px) {
+  .categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}

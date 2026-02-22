@@ -1,0 +1,239 @@
+.player {
+  min-height: 100vh;
+  padding-top: 70px;
+  background-color: var(--netflix-black);
+}
+
+.player-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.player-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.player-back-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: transparent;
+  color: var(--netflix-white);
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.player-back-button:hover {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.player-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--netflix-white);
+}
+
+.player-video-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  /* 16:9 aspect ratio */
+  background-color: var(--netflix-dark-gray);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.player-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.player-servers {
+  background-color: var(--netflix-dark-gray);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.player-servers-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--netflix-white);
+  margin-bottom: 1rem;
+}
+
+.player-servers-list {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.player-server-button {
+  padding: 0.8rem 1.5rem;
+  background-color: var(--netflix-gray);
+  color: var(--netflix-white);
+  border: 2px solid transparent;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+
+.player-server-button:hover {
+  background-color: var(--netflix-light-gray);
+}
+
+.player-server-button.active {
+  background-color: var(--netflix-red);
+  border-color: var(--netflix-red);
+}
+
+.player-controls {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.player-control-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  background-color: var(--netflix-red);
+  color: var(--netflix-white);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.player-control-button:hover:not(:disabled) {
+  background-color: #f40612;
+  transform: scale(1.05);
+}
+
+.player-control-button:disabled {
+  background-color: var(--netflix-gray);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.player-control-button:disabled:hover {
+  transform: none;
+}
+
+.player-episodes {
+  background-color: var(--netflix-dark-gray);
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.player-episodes-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--netflix-white);
+  margin-bottom: 1.5rem;
+}
+
+.player-episodes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.player-episode-button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1rem;
+  background-color: var(--netflix-gray);
+  color: var(--netflix-white);
+  border: 2px solid transparent;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: left;
+}
+
+.player-episode-button:hover {
+  background-color: var(--netflix-light-gray);
+  transform: scale(1.03);
+}
+
+.player-episode-button.active {
+  background-color: var(--netflix-red);
+  border-color: var(--netflix-red);
+}
+
+.player-episode-number {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+
+.player-episode-title {
+  font-size: 0.95rem;
+  color: var(--netflix-light-gray);
+}
+
+.player-episode-button.active .player-episode-title {
+  color: var(--netflix-white);
+}
+
+@media (max-width: 768px) {
+  .player-container {
+    padding: 1rem;
+  }
+
+  .player-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .player-title {
+    font-size: 1.5rem;
+  }
+
+  .player-controls {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .player-control-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .player-episodes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .player-servers-list {
+    flex-direction: column;
+  }
+
+  .player-server-button {
+    width: 100%;
+  }
+}

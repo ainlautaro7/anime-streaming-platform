@@ -1,0 +1,43 @@
+.popular-page {
+    min-height: 100vh;
+    background-color: var(--bg-deep);
+}
+
+.popular-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.5rem;
+}
+
+.no-results {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 4rem;
+    font-size: 1.2rem;
+}
+
+@media (max-width: 1400px) {
+    .popular-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 1024px) {
+    .popular-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .popular-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+}
+
+.popular-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 2rem;
+}

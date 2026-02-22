@@ -1,0 +1,183 @@
+.genre-filter-container {
+    position: relative;
+    z-index: 50;
+}
+
+.filter-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    /* Default radius */
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Rounded variant for header */
+.header-variant .filter-dropdown {
+    border-radius: 20px;
+    background-color: var(--card-bg);
+}
+
+.filter-dropdown:hover,
+.filter-dropdown.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.header-variant .filter-dropdown:hover,
+.header-variant .filter-dropdown.active {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+
+.filter-dropdown svg {
+    transition: transform 0.3s ease;
+}
+
+.filter-dropdown svg.rotate-180 {
+    transform: rotate(180deg);
+}
+
+.genre-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    background-color: #0c0d10 !important;
+    /* Force solid dark background */
+    opacity: 1 !important;
+    backdrop-filter: none !important;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 0;
+    width: 650px;
+    max-height: min(500px, 70vh);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    animation: slideDown 0.2s ease-out;
+    z-index: 1000;
+    overscroll-behavior: contain;
+    /* Prevent scrolling the body from within the dropdown */
+}
+
+.genre-dropdown-header {
+    padding: 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.genre-search-box {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: white;
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.genre-search-box:focus {
+    border-color: var(--primary-blue);
+    background-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.genre-items-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.25rem;
+    padding: 1rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.genre-item {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+.genre-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+.genre-item.active {
+    background-color: rgba(59, 130, 246, 0.15);
+    color: var(--primary-blue);
+}
+
+.genre-checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.genre-checkbox-inner {
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    border-radius: 2px;
+}
+
+.genre-item.active .genre-checkbox {
+    background-color: var(--primary-blue);
+    border-color: var(--primary-blue);
+}
+
+.no-genres-found {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+/* Header variant adjustments */
+
+.header-variant .genre-dropdown-menu {
+    width: 320px;
+}
+
+.header-variant .genre-items-list {
+    grid-template-columns: 1fr;
+    max-height: 350px;
+}
+
+@media (max-width: 768px) {
+    .genre-dropdown-menu {
+        width: 90vw;
+        max-width: 450px;
+    }
+
+    .genre-items-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

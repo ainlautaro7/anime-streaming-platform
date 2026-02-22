@@ -1,0 +1,101 @@
+.anime-row {
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.anime-row-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.anime-row-title {
+  color: var(--text-main);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.see-all-link {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.see-all-link:hover {
+  color: var(--primary-blue);
+}
+
+.anime-row-container {
+  position: relative;
+  margin: 0 -3rem;
+  padding: 0 3rem;
+}
+
+.anime-row-content {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 1rem 0;
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.anime-row-content::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari */
+}
+
+.anime-row-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background-color: var(--bg-dark);
+  border: 1px solid var(--border-subtle);
+  color: white;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.anime-row:hover .anime-row-button {
+  opacity: 1;
+}
+
+.anime-row-button:hover {
+  background-color: var(--primary-blue);
+  border-color: var(--primary-blue);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.anime-row-button-left {
+  left: 1rem;
+  padding: .5%;
+}
+
+.anime-row-button-right {
+  right: 1rem;
+  padding: .5%;
+}
+
+@media (max-width: 768px) {
+  .anime-row-container {
+    margin: 0 -1.5rem;
+    padding: 0 1.5rem;
+  }
+
+  .anime-row-button {
+    display: none;
+  }
+}
