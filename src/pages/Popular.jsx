@@ -13,6 +13,7 @@ function Popular() {
     const [loading, setLoading] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
     const [page, setPage] = useState(1);
+    const [hasNextPage, setHasNextPage] = useState(false);
     const [viewMode, setViewMode] = useState('grid');
 
     const observer = useRef();

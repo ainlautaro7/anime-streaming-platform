@@ -76,7 +76,11 @@ function Player() {
         <div className="player-header">
           {/* Back button is now in global Header */}
           <h1 className="player-title">
-            {loading ? 'Cargando...' : `${anime?.title} - Episodio ${currentEpisode}`}
+            {loading ? 'Cargando...' : (
+              anime?.type?.toLowerCase() === 'movie'
+                ? anime?.title
+                : `${anime?.title} - Episodio ${currentEpisode}`
+            )}
           </h1>
         </div>
 
@@ -96,7 +100,11 @@ function Player() {
               </div>
             ) : (
               <div className="player-no-video">
-                <h2>{anime?.title} - Episodio {currentEpisode}</h2>
+                <h2>
+                  {anime?.type?.toLowerCase() === 'movie'
+                    ? anime?.title
+                    : `${anime?.title} - Episodio ${currentEpisode}`}
+                </h2>
                 <p>No se pudieron encontrar fuentes de video para este anime en los servidores externos.</p>
               </div>
             )}
