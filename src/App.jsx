@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { AnimeProvider } from './context/AnimeContext';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
@@ -23,7 +23,7 @@ const PlaylistDetail = lazy(() => import('./pages/PlaylistDetail'));
 function App() {
   return (
     <AnimeProvider>
-      <Router basename="/anime-streaming-platform">
+      <Router>
         <ScrollToTop />
         <EpisodeModal />
         <div className="app">
