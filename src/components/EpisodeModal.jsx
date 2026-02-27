@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { X, Play, Star, Calendar, LayoutGrid, List } from 'lucide-react';
+import { X, Play, Star, Calendar, LayoutGrid, List, Heart, ListVideo } from 'lucide-react';
 import { useAnime } from '../context/AnimeContext';
 import { api } from '../services/api';
 import { watchedEpisodesService } from '../services/watchedEpisodes';
+import { favoritesService } from '../services/favorites';
+import PlaylistModal from './PlaylistModal';
 import { SkeletonModal } from './Skeletons';
 import './EpisodeModal.css';
 
@@ -14,7 +16,8 @@ function EpisodeModal() {
     const [loading, setLoading] = useState(true);
     const [availableEpisodes, setAvailableEpisodes] = useState(new Set());
     const [viewMode, setViewMode] = useState('grid');
-
+    const [isFavorite, setIsFavorite] = useState(false);
+    const [showPlaylistModal, setShowPlaylistModal] = useState(false);
 
     useEffect(() => {
         if (isEpisodeModalOpen) {
@@ -30,7 +33,7 @@ function EpisodeModal() {
 
     useEffect(() => {
         if (isEpisodeModalOpen && selectedAnime) {
-
+            setIsFavorite(favoritesService.isFavorite(selectedAnime.id));
             fetchFullDetails();
         } else {
             setAnimeDetails(null);
@@ -92,6 +95,13 @@ function EpisodeModal() {
         closeEpisodeModal();
     };
 
+    const handleToggleFavorite = () => {
+        if (animeDetails) {
+            const newIsFavorite = favoritesService.toggleFavorite(animeDetails);
+            setIsFavorite(newIsFavorite);
+        }
+    };
+
 
     return (
         <div className="episode-modal-backdrop" onClick={handleBackdropClick}>
@@ -128,15 +138,32 @@ function EpisodeModal() {
                                             <span key={index} className="anime-detail-genre">{genre}</span>
                                         ))}
                                     </div>
-                                    {animeDetails.type?.toLowerCase() === 'movie' && (
-                                        <button 
-                                            className="movie-watch-now-btn" 
-                                            onClick={() => handleEpisodeClick(1)}
+
+                                    <div className="episode-modal-actions">
+                                        {animeDetails.type?.toLowerCase() === 'movie' && (
+                                            <button
+                                                className="movie-watch-now-btn"
+                                                onClick={() => handleEpisodeClick(1)}
+                                            >
+                                                <Play size={20} fill="currentColor" />
+                                                Ver ahora
+                                            </button>
+                                        )}
+                                        <button
+                                            className={`action-icon-btn ${isFavorite ? 'active' : ''}`}
+                                            onClick={handleToggleFavorite}
+                                            title={isFavorite ? "Quitar de favoritos" : "Añadir a favoritos"}
                                         >
-                                            <Play size={20} fill="currentColor" />
-                                            Ver ahora
+                                            <Heart size={24} fill={isFavorite ? "currentColor" : "none"} />
                                         </button>
-                                    )}
+                                        <button
+                                            className="action-icon-btn"
+                                            onClick={() => setShowPlaylistModal(true)}
+                                            title="Añadir a lista de reproducción"
+                                        >
+                                            <ListVideo size={24} />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -197,6 +224,12 @@ function EpisodeModal() {
                     )}
                 </div>
 
+                {showPlaylistModal && animeDetails && (
+                    <PlaylistModal
+                        anime={animeDetails}
+                        onClose={() => setShowPlaylistModal(false)}
+                    />
+                )}
             </div>
         </div>
     );

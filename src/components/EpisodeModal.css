@@ -142,7 +142,38 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.2s, transform 0.1s;
-    margin-top: 1rem;
+}
+
+.episode-modal-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.action-icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--netflix-white);
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 1.5%;
+}
+
+.action-icon-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.action-icon-btn.active {
+    color: var(--netflix-red);
 }
 
 .movie-watch-now-btn:hover {
