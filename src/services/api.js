@@ -81,7 +81,7 @@ export const api = {
    */
   getAiringAnime: async () => {
     try {
-      const response = await fetch(`${JIKAN_URL}/seasons/now?limit=20`);
+      const response = await fetch(`${JIKAN_URL}/seasons/now?limit=20&sfw=true`);
       const result = await response.json();
       if (!result.data) return [];
 
@@ -113,7 +113,7 @@ export const api = {
   getPopularAnime: async (type = '', page = 1) => {
     try {
       await delay(500);
-      let url = `${JIKAN_URL}/top/anime?page=${page}&limit=20`;
+      let url = `${JIKAN_URL}/top/anime?page=${page}&limit=20&sfw=true`;
       if (type) {
         url += `&type=${type}`;
       }
@@ -243,7 +243,7 @@ export const api = {
             // Delay to respect Jikan Rate Limit
             await delay(300);
             // Strict search in Jikan by title
-            const jikanResponse = await fetch(`${JIKAN_URL}/anime?q=${encodeURIComponent(flvItem.title)}&limit=1`);
+            const jikanResponse = await fetch(`${JIKAN_URL}/anime?q=${encodeURIComponent(flvItem.title)}&limit=1&sfw=true`);
             const jikanResult = await jikanResponse.json();
 
             const jikanItem = jikanResult.data && jikanResult.data.length > 0 ? jikanResult.data[0] : null;
@@ -294,7 +294,12 @@ export const api = {
     try {
       const response = await fetch(`${JIKAN_URL}/genres/anime`);
       const result = await response.json();
-      return result.data || [];
+
+      if (!result.data) return [];
+
+      // Filtramos categorías de contenido sensible/para adultos
+      const adultGenres = ['Hentai', 'Ecchi', 'Erotica', 'Boys Love', 'Girls Love'];
+      return result.data.filter(genre => !adultGenres.includes(genre.name));
     } catch (error) {
       console.error('Error fetching genres:', error);
       return [];
@@ -307,7 +312,7 @@ export const api = {
   getAnimeByGenre: async (genreId, page = 1) => {
     try {
       await delay(500);
-      const response = await fetch(`${JIKAN_URL}/anime?genres=${genreId}&page=${page}&order_by=score&sort=desc`);
+      const response = await fetch(`${JIKAN_URL}/anime?genres=${genreId}&page=${page}&order_by=score&sort=desc&sfw=true`);
       const result = await response.json();
       if (!result.data) return { data: [], pagination: {} };
 
