@@ -23,7 +23,7 @@ const PlaylistDetail = lazy(() => import('./pages/PlaylistDetail'));
 function App() {
   return (
     <AnimeProvider>
-      <Router>
+      <Router basename="/anime-streaming-platform">
         <ScrollToTop />
         <EpisodeModal />
         <div className="app">

@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: '/anime-streaming-platform/',
   server: {
     port: 5173,
     host: 'localhost',

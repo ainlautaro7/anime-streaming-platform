@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Edit2, Trash2, ListVideo } from 'lucide-react';
 import { playlistsService } from '../services/playlists';
+import { api } from '../services/api';
 import AnimeCard from '../components/AnimeCard';
+import GenreDropdown from '../components/GenreDropdown';
 import './Playlists.css';
 
 function PlaylistDetail() {
@@ -12,9 +14,16 @@ function PlaylistDetail() {
     const [isEditing, setIsEditing] = useState(false);
     const [editName, setEditName] = useState('');
     const [editDescription, setEditDescription] = useState('');
+    const [genres, setGenres] = useState([]);
+    const [selectedGenreIds, setSelectedGenreIds] = useState([]);
 
     useEffect(() => {
         loadPlaylist();
+        const fetchGenres = async () => {
+            const list = await api.getGenres();
+            setGenres(list);
+        };
+        fetchGenres();
     }, [id]);
 
     const loadPlaylist = () => {
@@ -52,6 +61,33 @@ function PlaylistDetail() {
         }
     };
 
+    const handleGenreSelect = (genre) => {
+        if (!genre) {
+            setSelectedGenreIds([]);
+            return;
+        }
+
+        const idStr = String(genre.mal_id);
+        const isAlreadySelected = selectedGenreIds.includes(idStr);
+
+        if (isAlreadySelected) {
+            setSelectedGenreIds(selectedGenreIds.filter(id => id !== idStr));
+        } else {
+            setSelectedGenreIds([...selectedGenreIds, idStr]);
+        }
+    };
+
+    const filteredItems = playlist ? playlist.items.filter(anime => {
+        if (selectedGenreIds.length === 0) return true;
+        const selectedGenreNames = genres
+            .filter(g => selectedGenreIds.includes(String(g.mal_id)))
+            .map(g => g.name.toLowerCase());
+
+        return selectedGenreNames.every(name =>
+            anime.genres.some(g => g.toLowerCase() === name)
+        );
+    }) : [];
+
     if (!playlist) {
         return (
             <div className="playlists-page page-container animate-fade">
@@ -65,11 +101,21 @@ function PlaylistDetail() {
 
     return (
         <div className="playlists-page page-container animate-fade">
-            <div className="playlist-detail-header">
-                <button className="back-button" onClick={() => navigate('/playlists')}>
-                    <ArrowLeft size={20} />
-                    Volver
-                </button>
+            <div className="playlist-detail-header" style={{ flexWrap: 'wrap', gap: '1rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <button className="back-button" onClick={() => navigate('/playlists')}>
+                        <ArrowLeft size={20} />
+                        Volver
+                    </button>
+                    {!isEditing && playlist.items.length > 0 && (
+                        <GenreDropdown
+                            genres={genres}
+                            selectedGenreIds={selectedGenreIds}
+                            onSelect={handleGenreSelect}
+                            className="header-variant"
+                        />
+                    )}
+                </div>
 
                 {isEditing ? (
                     <form onSubmit={handleUpdatePlaylist} className="playlist-edit-form">
@@ -142,9 +188,13 @@ function PlaylistDetail() {
                     <p>Esta lista está vacía</p>
                     <p className="empty-subtitle">Agrega animes desde sus páginas de detalles</p>
                 </div>
+            ) : filteredItems.length === 0 ? (
+                <div className="empty-state">
+                    <p>No se encontraron animes para los géneros seleccionados.</p>
+                </div>
             ) : (
                 <div className="anime-grid">
-                    {playlist.items.map((anime) => (
+                    {filteredItems.map((anime) => (
                         <div key={anime.id} className="playlist-anime-item">
                             <AnimeCard anime={anime} wide />
                             <button

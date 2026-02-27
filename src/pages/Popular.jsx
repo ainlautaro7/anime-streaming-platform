@@ -2,9 +2,10 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import Hero from '../components/Hero';
 import AnimeCard from '../components/AnimeCard';
 import { api } from '../services/api';
-import { Grid, List, ChevronDown } from 'lucide-react';
+import { Grid, List } from 'lucide-react';
 import { SkeletonHero, SkeletonCard } from '../components/Skeletons';
 import Loader from '../components/Loader';
+import GenreDropdown from '../components/GenreDropdown';
 import './Popular.css';
 
 function Popular() {
@@ -15,6 +16,8 @@ function Popular() {
     const [page, setPage] = useState(1);
     const [hasNextPage, setHasNextPage] = useState(false);
     const [viewMode, setViewMode] = useState('grid');
+    const [genres, setGenres] = useState([]);
+    const [selectedGenreIds, setSelectedGenreIds] = useState([]);
 
     const observer = useRef();
     const lastAnimeElementRef = useCallback(node => {
@@ -27,6 +30,14 @@ function Popular() {
         });
         if (node) observer.current.observe(node);
     }, [loading, loadingMore, hasNextPage]);
+
+    useEffect(() => {
+        const fetchGenres = async () => {
+            const list = await api.getGenres();
+            setGenres(list);
+        };
+        fetchGenres();
+    }, []);
 
     useEffect(() => {
         const fetchPopular = async () => {
@@ -57,6 +68,36 @@ function Popular() {
         fetchPopular();
     }, [page]);
 
+    const handleGenreSelect = (genre) => {
+        if (!genre) {
+            setSelectedGenreIds([]);
+            return;
+        }
+
+        const idStr = String(genre.mal_id);
+        const isAlreadySelected = selectedGenreIds.includes(idStr);
+
+        if (isAlreadySelected) {
+            setSelectedGenreIds(selectedGenreIds.filter(id => id !== idStr));
+        } else {
+            setSelectedGenreIds([...selectedGenreIds, idStr]);
+        }
+    };
+
+    const filteredAnime = popularAnime.filter(anime => {
+        if (selectedGenreIds.length === 0) return true;
+        // Anime must contain all selected genres
+        // anime.genres is an array of strings like ['Action', 'Comedy']
+        // We find the names of the selected genre IDs
+        const selectedGenreNames = genres
+            .filter(g => selectedGenreIds.includes(String(g.mal_id)))
+            .map(g => g.name.toLowerCase());
+
+        return selectedGenreNames.every(name =>
+            anime.genres.some(g => g.toLowerCase() === name)
+        );
+    });
+
     if (loading && page === 1) {
         return (
             <div className="popular-page animate-fade">
@@ -80,10 +121,12 @@ function Popular() {
                 <div className="page-section-header">
                     <div className="header-left">
                         <h1 className="page-title">Animes Populares</h1>
-                        <button className="filter-dropdown">
-                            Genres
-                            <ChevronDown size={18} />
-                        </button>
+                        <GenreDropdown
+                            genres={genres}
+                            selectedGenreIds={selectedGenreIds}
+                            onSelect={handleGenreSelect}
+                            className="popular-genre-filter"
+                        />
                     </div>
                     <div className="view-toggles">
                         <button
@@ -103,14 +146,15 @@ function Popular() {
                     </div>
                 </div>
 
-                {popularAnime.length > 0 ? (
+                {filteredAnime.length > 0 ? (
                     <>
                         <div className={`popular-${viewMode}`}>
-                            {popularAnime.map((anime, index) => {
-                                // If it's the very first element (Hero), skip it
-                                if (index === 0) return null;
+                            {filteredAnime.map((anime, index) => {
+                                // If it's the very first element (Hero) AND we have NO filters, skip it
+                                // If filtered, we show everything in the list so users can find it easier
+                                if (index === 0 && selectedGenreIds.length === 0) return null;
 
-                                if (popularAnime.length === index + 1) {
+                                if (filteredAnime.length === index + 1) {
                                     return (
                                         <div ref={lastAnimeElementRef} key={anime.id}>
                                             <AnimeCard anime={anime} layout={viewMode} wide={viewMode === 'grid'} />
@@ -119,7 +163,6 @@ function Popular() {
                                 } else {
                                     return <AnimeCard key={anime.id} anime={anime} layout={viewMode} wide={viewMode === 'grid'} />;
                                 }
-
                             })}
                         </div>
 
