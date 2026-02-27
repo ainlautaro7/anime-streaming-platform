@@ -51,10 +51,7 @@ function Hero({ animes }) {
                 </div>
 
                 <div className="hero-info-column">
-                  <div className="hero-original">
-                    <div className="logo-icon-small">S</div>
-                    <span>slothui <b>original</b></span>
-                  </div>
+                  <span><b>Anime Streaming Platform</b></span>
 
                   <h1 className="hero-title">{currentAnime.title}</h1>
 

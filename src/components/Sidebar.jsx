@@ -5,10 +5,6 @@ import './Sidebar.css';
 function Sidebar() {
     return (
         <aside className="sidebar">
-            <div className="sidebar-logo">
-                <div className="logo-icon">S</div>
-            </div>
-
             <nav className="sidebar-nav">
                 <NavLink to="/" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} title="Home">
                     <Home size={22} />
