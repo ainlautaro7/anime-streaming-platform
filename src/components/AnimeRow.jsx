@@ -21,7 +21,7 @@ function AnimeRow({ title, animes, showSeeAll }) {
         <h2 className="anime-row-title">{title}</h2>
         {showSeeAll && (
           <Link to="/popular" className="see-all-link">
-            SEE ALL &gt;
+            VER TODOS &gt;
           </Link>
         )}
       </div>
