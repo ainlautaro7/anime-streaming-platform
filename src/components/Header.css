@@ -182,8 +182,15 @@
     display: none;
   }
 
+  .header-actions {
+    width: auto;
+    gap: 1rem;
+  }
+
   .mobile-menu-toggle {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .nav-open {

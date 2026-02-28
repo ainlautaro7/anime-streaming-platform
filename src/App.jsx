@@ -1,4 +1,4 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useState } from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { AnimeProvider } from './context/AnimeContext';
 import Header from './components/Header';
@@ -21,16 +21,28 @@ const Playlists = lazy(() => import('./pages/Playlists'));
 const PlaylistDetail = lazy(() => import('./pages/PlaylistDetail'));
 
 function App() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(false);
+  };
+
   return (
     <AnimeProvider>
       <Router>
         <ScrollToTop />
         <EpisodeModal />
         <div className="app">
+          {isSidebarOpen && (
+            <div
+              className="mobile-sidebar-overlay"
+              onClick={toggleSidebar}
+            />
+          )}
 
-          <Sidebar />
+          <Sidebar isOpen={isSidebarOpen} closeSidebar={toggleSidebar} />
           <div className="main-layout">
-            <Header />
+            <Header isSidebarOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
             <main className="content-area">
               <Suspense fallback={<Loader fullPage={false} />}>
                 <Routes>

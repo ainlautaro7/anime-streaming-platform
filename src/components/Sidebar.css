@@ -95,7 +95,15 @@
 
 @media (max-width: 1024px) {
     .sidebar {
-        display: none;
-        /* Hide on mobile, header will take over */
+        left: auto;
+        right: 0;
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 2000;
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
     }
 }

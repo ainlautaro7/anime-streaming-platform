@@ -4,9 +4,8 @@ import { Search, Menu, X, Settings, ChevronDown, ArrowLeft } from 'lucide-react'
 import { useAnime } from '../context/AnimeContext';
 import './Header.css';
 
-function Header() {
+function Header({ isSidebarOpen, toggleSidebar }) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -97,9 +96,9 @@ function Header() {
 
           <button
             className="mobile-menu-toggle"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            onClick={toggleSidebar}
           >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
