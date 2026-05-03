@@ -95,8 +95,11 @@ export const api = {
         synopsis: item.synopsis,
         rating: item.score,
         year: item.year,
+        season: item.season,
         genres: item.genres?.map(g => g.name) || [],
         type: item.type,
+        broadcast: item.broadcast || null,
+        aired: item.aired || null,
         slug: item.mal_id
       }));
     } catch (error) {
@@ -155,7 +158,7 @@ export const api = {
       const result = await response.json();
       const item = result.data;
       if (!item) return null;
-      return {
+        return {
         id: item.mal_id,
         title: item.title,
         cover: item.images.webp.large_image_url,
@@ -163,6 +166,8 @@ export const api = {
         rating: item.score,
         status: item.status,
         type: item.type,
+        broadcast: item.broadcast || null,
+        aired: item.aired || null,
         genres: item.genres?.map(g => g.name) || [],
         episodes_count: item.episodes,
         trailer: item.trailer?.embed_url,
@@ -265,7 +270,7 @@ export const api = {
             // If we don't have MAL ID, we can't load details in current architecture.
             // So we skip.
             return null;
-          } catch (e) {
+          } catch {
             console.error('Error enriching item:', flvItem.title);
             return null;
           }

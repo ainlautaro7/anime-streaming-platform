@@ -14,6 +14,7 @@ const Home = lazy(() => import('./pages/Home'));
 const Popular = lazy(() => import('./pages/Popular'));
 const AnimeDetail = lazy(() => import('./pages/AnimeDetail'));
 const Player = lazy(() => import('./pages/Player'));
+const SeasonCalendarPage = lazy(() => import('./pages/SeasonCalendarPage'));
 const SearchResults = lazy(() => import('./pages/SearchResults'));
 const CategoryPage = lazy(() => import('./pages/CategoryPage'));
 const Favorites = lazy(() => import('./pages/Favorites'));
@@ -48,6 +49,7 @@ function App() {
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/popular" element={<Popular />} />
+                  <Route path="/calendar" element={<SeasonCalendarPage />} />
                   <Route path="/movies" element={<CategoryPage type="movie" title="Películas de Anime" />} />
                   <Route path="/series" element={<CategoryPage type="tv" title="Series de Anime" />} />
                   <Route path="/recent" element={<Home />} />

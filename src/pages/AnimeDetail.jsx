@@ -8,6 +8,7 @@ import { favoritesService } from '../services/favorites';
 import { watchedEpisodesService } from '../services/watchedEpisodes';
 import { SkeletonDetail } from '../components/Skeletons';
 import Loader from '../components/Loader';
+import { formatSeasonOption, getAvailableSeasonOptions } from '../utils/seasonRelations';
 import './AnimeDetail.css';
 
 function AnimeDetail() {
@@ -22,6 +23,7 @@ function AnimeDetail() {
   const [isFav, setIsFav] = useState(false);
   const [availableEpisodes, setAvailableEpisodes] = useState(new Set());
   const [showPlaylistModal, setShowPlaylistModal] = useState(false);
+  const [seasonOptions, setSeasonOptions] = useState([]);
 
   useEffect(() => {
     const fetchAnime = async () => {
@@ -58,8 +60,26 @@ function AnimeDetail() {
         setCurrentAnime(data); // Update global context
         setIsFav(favoritesService.isFavorite(data.id));
 
+        const seasonList = await getAvailableSeasonOptions(data);
+        setSeasonOptions(seasonList);
+
         // En Jikan, el tipo es 'Movie'
         if (data && data.type === 'Movie' && data.episodes) {
+          const fetchServers = async (episodeNumber, title) => {
+            setLoadingServers(true);
+            try {
+              const serversData = await api.getEpisodeServers(slug, episodeNumber, title || data.title);
+              setServers(serversData);
+              if (serversData.length > 0) {
+                setCurrentServer(serversData[0]);
+              }
+            } catch (error) {
+              console.error('Error fetching servers for movie:', error);
+            } finally {
+              setLoadingServers(false);
+            }
+          };
+
           fetchServers(1, data.title);
         }
       } catch (error) {
@@ -79,21 +99,6 @@ function AnimeDetail() {
     }
   };
 
-  const fetchServers = async (episodeNumber, title) => {
-    setLoadingServers(true);
-    try {
-      const serversData = await api.getEpisodeServers(slug, episodeNumber, title || anime?.title);
-      setServers(serversData);
-      if (serversData.length > 0) {
-        setCurrentServer(serversData[0]);
-      }
-    } catch (error) {
-      console.error('Error fetching servers for movie:', error);
-    } finally {
-      setLoadingServers(false);
-    }
-  };
-
   if (loading) return <SkeletonDetail />;
   if (!anime) return <div className="error">No se encontró el anime.</div>;
 
@@ -103,10 +108,7 @@ function AnimeDetail() {
 
   const handlePlayClick = () => {
     if (isMovie) {
-      const playerElement = document.getElementById('movie-player');
-      if (playerElement) {
-        playerElement.scrollIntoView({ behavior: 'smooth' });
-      }
+      navigate(`/watch/${slug}/1`);
     } else if (anime.episodes && anime.episodes.length > 0) {
       navigate(`/watch/${slug}/${anime.episodes[0].number}`);
     }
@@ -187,7 +189,7 @@ function AnimeDetail() {
                   src={currentServer.embed}
                   className="player-video"
                   allowFullScreen
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allow="autoplay; fullscreen; picture-in-picture"
                   title={anime.title}
                 />
               </div>
@@ -219,26 +221,20 @@ function AnimeDetail() {
           <div className="anime-detail-episodes-header">
             <h2 className="anime-detail-episodes-title">Episodios</h2>
 
-            {anime.relations && anime.relations.length > 0 && (
+            {seasonOptions.length > 1 && (
               <div className="relations-dropdown-wrapper">
                 <select
                   className="relations-dropdown"
                   onChange={(e) => {
                     if (e.target.value) navigate(`/anime/${e.target.value}`)
                   }}
-                  value=""
+                  value={anime.id}
                 >
-                  <option value="" disabled>Más temporadas</option>
-                  {anime.relations
-                    .filter(rel => ['Sequel', 'Prequel', 'Parent story', 'Side story', 'Summary', 'Alternative version'].includes(rel.relation))
-                    .flatMap(rel => rel.entry.map(entry => ({ ...entry, relation: rel.relation })))
-                    .filter(entry => entry.type === 'anime')
-                    .map(entry => (
-                      <option key={entry.mal_id} value={entry.mal_id}>
-                        {entry.relation}: {entry.name}
-                      </option>
-                    ))
-                  }
+                  {seasonOptions.map((season) => (
+                    <option key={season.id} value={season.id}>
+                      {formatSeasonOption(season)}
+                    </option>
+                  ))}
                 </select>
               </div>
             )}

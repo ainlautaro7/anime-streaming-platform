@@ -135,7 +135,7 @@
 /* Responsive */
 @media (max-width: 768px) {
   .genre-dropdown-menu {
-    width: 300px;
+    width: min(100vw - 2rem, 360px);
     grid-template-columns: repeat(2, 1fr);
   }
 }

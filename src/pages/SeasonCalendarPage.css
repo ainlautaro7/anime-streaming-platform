@@ -1,0 +1,243 @@
+.season-calendar-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.08), transparent 28%),
+    radial-gradient(circle at 85% 20%, rgba(229, 9, 20, 0.08), transparent 26%),
+    var(--bg-deep);
+}
+
+.season-calendar-page-container {
+  padding-top: 2.5rem;
+  padding-bottom: 4rem;
+}
+
+.season-calendar-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(320px, 0.9fr);
+  gap: 1.25rem;
+  align-items: stretch;
+  margin-bottom: 2rem;
+}
+
+.season-calendar-hero--loading {
+  min-height: 320px;
+}
+
+.season-calendar-hero-copy,
+.season-calendar-hero-panel {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
+    rgba(15, 15, 15, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 28px;
+  padding: 1.5rem;
+  box-shadow: 0 22px 65px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(12px);
+}
+
+.season-calendar-hero-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 100%;
+}
+
+.season-calendar-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.season-calendar-page-title {
+  font-size: clamp(2.4rem, 4vw, 4.6rem);
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  color: var(--text-primary);
+  margin: 0;
+  text-wrap: balance;
+}
+
+.season-calendar-page-description {
+  max-width: 62ch;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  font-size: 1rem;
+}
+
+.season-calendar-hero-chips {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin-top: auto;
+}
+
+.season-calendar-day-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.7rem 0.5rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-secondary);
+}
+
+.season-calendar-day-chip span {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.season-calendar-day-chip strong {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.season-calendar-day-chip.active {
+  background: linear-gradient(135deg, rgba(229, 9, 20, 0.22), rgba(255, 255, 255, 0.05));
+  border-color: rgba(229, 9, 20, 0.28);
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.season-calendar-hero-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.season-calendar-hero-badge {
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.8rem 1rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.season-calendar-hero-note {
+  margin: -0.25rem 0 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.season-calendar-hero-stats {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+}
+
+.season-calendar-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem 1.05rem;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.season-calendar-stat-card svg {
+  color: var(--text-primary);
+  flex-shrink: 0;
+}
+
+.season-calendar-stat-card span {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.15rem;
+}
+
+.season-calendar-stat-card strong {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.season-calendar-loading {
+  padding: 3rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.season-calendar-skeleton {
+  border-radius: 16px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06));
+  background-size: 200% 100%;
+  animation: calendarPulse 1.4s ease infinite;
+}
+
+.season-calendar-skeleton.title {
+  width: min(100%, 520px);
+  height: 4.5rem;
+}
+
+.season-calendar-skeleton.text {
+  width: min(100%, 620px);
+  height: 1rem;
+}
+
+.season-calendar-skeleton.text.short {
+  width: min(100%, 360px);
+}
+
+.season-calendar-skeleton.chip {
+  width: 120px;
+  height: 2.6rem;
+  margin-left: auto;
+}
+
+.season-calendar-skeleton.stat {
+  height: 4.25rem;
+}
+
+@keyframes calendarPulse {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@media (max-width: 1100px) {
+  .season-calendar-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .season-calendar-hero-chips {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .season-calendar-page-container {
+    padding-top: 1.5rem;
+  }
+
+  .season-calendar-hero-copy,
+  .season-calendar-hero-panel {
+    border-radius: 22px;
+    padding: 1.15rem;
+  }
+
+  .season-calendar-page-title {
+    font-size: clamp(2rem, 10vw, 3rem);
+  }
+
+  .season-calendar-hero-chips {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

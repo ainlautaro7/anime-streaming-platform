@@ -1,10 +1,8 @@
-import { useNavigate } from 'react-router-dom';
 import { Play } from 'lucide-react';
 import { useAnime } from '../context/AnimeContext';
 import './AnimeCard.css';
 
 function AnimeCard({ anime, wide, layout = 'grid' }) {
-  const navigate = useNavigate();
   const { openEpisodeModal } = useAnime();
 
   const handleClick = () => {

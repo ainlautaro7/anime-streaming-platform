@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Hero from '../components/Hero';
 import AnimeRow from '../components/AnimeRow';
 import { api } from '../services/api';
-import GenreDropdown from '../components/GenreDropdown';
 import { SkeletonHero, SkeletonRow } from '../components/Skeletons';
 import './Home.css';
 
@@ -13,9 +11,6 @@ function Home() {
   const [popularAnime, setPopularAnime] = useState([]);
   const [featuredAnimes, setFeaturedAnimes] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const [genres, setGenres] = useState([]);
-  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -34,10 +29,6 @@ function Home() {
 
         const popular = await api.getPopularAnime();
         setPopularAnime(popular.data);
-
-        // Fetch genres
-        const genresList = await api.getGenres();
-        setGenres(genresList);
       } catch (error) {
         console.error('Error fetching data for Home:', error);
       } finally {
@@ -47,12 +38,6 @@ function Home() {
 
     fetchData();
   }, []);
-
-  const handleGenreSelect = (genre) => {
-    navigate(`/browse?genre=${genre.mal_id}&title=${encodeURIComponent(genre.name)}`);
-  };
-
-
 
   if (loading) {
     return (

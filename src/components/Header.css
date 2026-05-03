@@ -22,16 +22,18 @@
 
 .header-container {
   width: 100%;
-  padding: 0 4rem;
+  padding: 0 clamp(1.25rem, 3vw, 4rem);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
 }
 
 .header-info {
   display: flex;
   align-items: center;
   gap: 1rem;
+  min-width: 0;
 }
 
 .header-back-btn {
@@ -61,6 +63,7 @@
   display: flex;
   align-items: center;
   gap: 0.8rem;
+  min-width: 0;
 }
 
 .current-module::before {
@@ -95,15 +98,16 @@
 }
 
 .header-actions {
-  width: 25%;
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
   margin-left: auto;
+  min-width: 0;
 }
 
 .search-bar {
-  width: 100%;
+  width: clamp(180px, 22vw, 300px);
+  flex: 0 1 auto;
   display: flex;
   align-items: center;
   background: rgba(255, 255, 255, 0.08);
@@ -126,7 +130,8 @@
   outline: none;
   color: white;
   font-size: 0.95rem;
-  width: 150px;
+  width: 100%;
+  min-width: 0;
 }
 
 .search-icon {
@@ -182,11 +187,6 @@
     display: none;
   }
 
-  .header-actions {
-    width: auto;
-    gap: 1rem;
-  }
-
   .mobile-menu-toggle {
     display: flex;
     align-items: center;
@@ -210,10 +210,28 @@
 
 @media (max-width: 768px) {
   .header-container {
-    padding: 0 1.5rem;
+    padding: 0 1rem;
   }
 
-  .search-active .search-form {
-    width: 180px;
+  .header-info {
+    gap: 0.75rem;
+    max-width: calc(100vw - 6rem);
+  }
+
+  .current-module {
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+  }
+
+  .search-bar {
+    display: none;
+  }
+
+  .header-actions {
+    gap: 0.75rem;
   }
 }

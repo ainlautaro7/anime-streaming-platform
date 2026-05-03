@@ -46,6 +46,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-width: 0;
 }
 
 .anime-detail-title {
@@ -142,6 +143,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .anime-detail-fav-button {
@@ -206,6 +208,53 @@
   .anime-detail-hero {
     height: auto;
     min-height: 100vh;
+  }
+
+  .anime-detail-hero-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .anime-detail-poster {
+    width: 220px;
+    max-width: 70vw;
+    height: auto;
+    aspect-ratio: 2 / 3;
+  }
+
+  .anime-detail-title {
+    font-size: 2rem;
+  }
+
+  .anime-detail-description {
+    font-size: 1rem;
+  }
+
+  .anime-detail-stats {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .anime-detail-play-button {
+    width: 100%;
+    align-self: stretch;
+  }
+
+  .anime-detail-episodes {
+    padding: 1.5rem;
+  }
+
+  .anime-detail-episodes-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .relations-dropdown {
+    min-width: 0;
+    width: 100%;
   }
 }
 

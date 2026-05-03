@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Home, Compass, PlaySquare, Clock, Heart, Settings, LogOut, Clapperboard, ListVideo, LayoutGrid } from 'lucide-react';
+import { Home, Compass, PlaySquare, Heart, Clapperboard, ListVideo, LayoutGrid, Calendar } from 'lucide-react';
 import './Sidebar.css';
 
 function Sidebar({ isOpen, closeSidebar }) {
@@ -11,6 +11,9 @@ function Sidebar({ isOpen, closeSidebar }) {
                 </NavLink>
                 <NavLink to="/browse" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} title="Categorías" onClick={closeSidebar}>
                     <LayoutGrid size={22} />
+                </NavLink>
+                <NavLink to="/calendar" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} title="Calendario de estrenos" onClick={closeSidebar}>
+                    <Calendar size={22} />
                 </NavLink>
                 <NavLink to="/series" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} title="Series" onClick={closeSidebar}>
                     <PlaySquare size={22} />

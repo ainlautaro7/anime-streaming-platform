@@ -22,6 +22,11 @@ function Hero({ animes }) {
   };
 
   const handlePlayClick = () => {
+    if ((currentAnime.type || '').toLowerCase() === 'movie') {
+      navigate(`/watch/${currentAnime.slug || currentAnime.id}/1`);
+      return;
+    }
+
     navigate(`/watch/${currentAnime.id}/1`);
   };
 
@@ -77,7 +82,7 @@ function Hero({ animes }) {
                   <div className="hero-actions">
                     <button
                       className="hero-button hero-button-info"
-                      onClick={() => navigate(`/anime/${currentAnime.slug || currentAnime.id}`)}
+                      onClick={handlePlayClick}
                     >
                       <Play size={20} />
                       Comenzar a ver

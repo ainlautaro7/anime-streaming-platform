@@ -145,16 +145,18 @@ img {
 .page-container {
   max-width: 1920px;
   margin: 0 auto;
-  padding: 0 3rem 4rem;
+  padding: 0 clamp(1rem, 2.5vw, 3rem) 4rem;
 }
 
 .page-section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
   margin: 2rem 0;
   padding-bottom: 2rem;
   border-bottom: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
 }
 
 .header-left {
@@ -167,6 +169,7 @@ img {
   color: var(--text-main);
   font-size: 2rem;
   font-weight: 700;
+  min-width: 0;
 }
 
 .filter-dropdown {
@@ -240,7 +243,7 @@ img {
 
 .anime-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 1.5rem;
   margin-top: 2rem;
 }
@@ -266,6 +269,26 @@ img {
 @media (max-width: 640px) {
   .anime-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .page-container {
+    padding: 0 1rem 3rem;
+  }
+
+  .page-title {
+    font-size: 1.6rem;
+  }
+
+  .page-section-header {
+    margin: 1.5rem 0;
+    padding-bottom: 1.25rem;
+  }
+
+  .anime-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 }
 

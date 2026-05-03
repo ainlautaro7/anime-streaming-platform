@@ -49,11 +49,72 @@
     z-index: 10;
 }
 
+.episode-modal-header-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    min-width: 0;
+}
+
 .episode-modal-header h2 {
     font-size: 1.75rem;
     font-weight: 700;
     color: var(--netflix-white);
     margin: 0;
+}
+
+.episode-modal-season-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    max-width: 340px;
+}
+
+.episode-modal-season-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--netflix-light-gray);
+}
+
+.episode-modal-season-select-wrap {
+    position: relative;
+}
+
+.episode-modal-season-select {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    min-width: 260px;
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--netflix-white);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 10px;
+    padding: 0.8rem 2.4rem 0.8rem 1rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s, transform 0.2s;
+}
+
+.episode-modal-season-select:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.episode-modal-season-select:focus {
+    outline: none;
+    border-color: var(--netflix-red);
+    box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.2);
+}
+
+.episode-modal-season-chevron {
+    position: absolute;
+    right: 0.85rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--netflix-light-gray);
 }
 
 .episode-modal-close {
@@ -190,6 +251,32 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+    .episode-modal-header {
+        padding: 1.1rem 1.2rem;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .episode-modal-header-copy {
+        width: 100%;
+    }
+
+    .episode-modal-header h2 {
+        font-size: 1.35rem;
+    }
+
+    .episode-modal-season-selector {
+        max-width: none;
+        width: 100%;
+    }
+
+    .episode-modal-season-select {
+        min-width: 0;
+        width: 100%;
+    }
 }
 
 .view-toggle {

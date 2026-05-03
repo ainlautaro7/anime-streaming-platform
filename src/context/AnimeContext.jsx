@@ -1,8 +1,10 @@
 import { createContext, useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const AnimeContext = createContext();
 
 export function AnimeProvider({ children }) {
+    const navigate = useNavigate();
     const [currentAnime, setCurrentAnime] = useState(null);
     const [isEpisodeModalOpen, setIsEpisodeModalOpen] = useState(false);
     const [selectedAnime, setSelectedAnime] = useState(null);
@@ -24,6 +26,12 @@ export function AnimeProvider({ children }) {
     };
 
     const openEpisodeModal = (anime) => {
+        if ((anime?.type || '').toLowerCase() === 'movie') {
+            setCurrentAnime(anime);
+            navigate(`/watch/${anime.slug || anime.id}/1`);
+            return;
+        }
+
         setSelectedAnime(anime);
         setIsEpisodeModalOpen(true);
     };
@@ -56,6 +64,7 @@ export function AnimeProvider({ children }) {
 
 
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAnime() {
     const context = useContext(AnimeContext);
     if (!context) {

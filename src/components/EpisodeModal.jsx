@@ -1,23 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { X, Play, Star, Calendar, LayoutGrid, List, Heart, ListVideo } from 'lucide-react';
+import { X, Play, Star, Calendar, LayoutGrid, List, Heart, ListVideo, ChevronDown } from 'lucide-react';
 import { useAnime } from '../context/AnimeContext';
 import { api } from '../services/api';
 import { watchedEpisodesService } from '../services/watchedEpisodes';
 import { favoritesService } from '../services/favorites';
 import PlaylistModal from './PlaylistModal';
 import { SkeletonModal } from './Skeletons';
+import { formatSeasonOption, getAvailableSeasonOptions } from '../utils/seasonRelations';
 import './EpisodeModal.css';
 
 function EpisodeModal() {
     const navigate = useNavigate();
     const { isEpisodeModalOpen, selectedAnime, closeEpisodeModal } = useAnime();
+    const requestRef = useRef(0);
     const [animeDetails, setAnimeDetails] = useState(null);
     const [loading, setLoading] = useState(true);
     const [availableEpisodes, setAvailableEpisodes] = useState(new Set());
     const [viewMode, setViewMode] = useState('grid');
     const [isFavorite, setIsFavorite] = useState(false);
     const [showPlaylistModal, setShowPlaylistModal] = useState(false);
+    const [seasonOptions, setSeasonOptions] = useState([]);
+    const [activeSeasonId, setActiveSeasonId] = useState('');
 
     useEffect(() => {
         if (isEpisodeModalOpen) {
@@ -33,22 +37,26 @@ function EpisodeModal() {
 
     useEffect(() => {
         if (isEpisodeModalOpen && selectedAnime) {
-            setIsFavorite(favoritesService.isFavorite(selectedAnime.id));
-            fetchFullDetails();
+            loadAnimeDetails(selectedAnime.slug || selectedAnime.id);
         } else {
             setAnimeDetails(null);
             setLoading(true);
+            setAvailableEpisodes(new Set());
+            setSeasonOptions([]);
+            setActiveSeasonId('');
         }
     }, [isEpisodeModalOpen, selectedAnime]);
 
-    const fetchFullDetails = async () => {
+    const loadAnimeDetails = async (animeId) => {
+        const requestId = ++requestRef.current;
         setLoading(true);
+        setAvailableEpisodes(new Set());
         try {
-            const slug = selectedAnime.slug || selectedAnime.id;
-            const data = await api.getAnimeBySlug(slug);
+            const data = await api.getAnimeBySlug(animeId);
+            if (!data || requestId !== requestRef.current) return;
 
-            // Get thumbnails
             const videosData = await api.getAnimeVideos(data.id);
+            if (requestId !== requestRef.current) return;
 
             if (data.episodes) {
                 data.episodes = data.episodes.map(episode => {
@@ -61,23 +69,41 @@ function EpisodeModal() {
                 });
             }
 
-            // Availability check
             const flvSlug = await api.getAnimeFLVSlug(data.title);
+            if (requestId !== requestRef.current) return;
             if (flvSlug) {
                 const flvDetails = await api.getAnimeFLVDetails(flvSlug);
                 if (flvDetails && flvDetails.episodes) {
                     const availableSet = new Set(flvDetails.episodes.map(ep => ep.number));
-                    setAvailableEpisodes(availableSet);
+                    if (requestId === requestRef.current) {
+                        setAvailableEpisodes(availableSet);
+                    }
+                } else if (requestId === requestRef.current) {
+                    setAvailableEpisodes(new Set());
                 }
-            } else {
+            } else if (requestId === requestRef.current) {
                 setAvailableEpisodes(new Set());
             }
 
+            if (requestId !== requestRef.current) return;
+
+            const seasonList = await getAvailableSeasonOptions(data);
+            if (requestId !== requestRef.current) return;
+
             setAnimeDetails(data);
+            setSeasonOptions(seasonList);
+            setActiveSeasonId(String(data.id));
+            setIsFavorite(favoritesService.isFavorite(data.id));
         } catch (error) {
             console.error('Error fetching modal details:', error);
+            if (requestId === requestRef.current) {
+                setSeasonOptions([]);
+                setActiveSeasonId('');
+            }
         } finally {
-            setLoading(false);
+            if (requestId === requestRef.current) {
+                setLoading(false);
+            }
         }
     };
 
@@ -90,7 +116,7 @@ function EpisodeModal() {
     };
 
     const handleEpisodeClick = (episodeNumber) => {
-        const slug = selectedAnime.slug || selectedAnime.id;
+        const slug = activeSeasonId || selectedAnime.slug || selectedAnime.id;
         navigate(`/watch/${slug}/${episodeNumber}`);
         closeEpisodeModal();
     };
@@ -102,12 +128,43 @@ function EpisodeModal() {
         }
     };
 
+    const handleSeasonChange = async (event) => {
+        const nextSeasonId = event.target.value;
+        if (!nextSeasonId || nextSeasonId === activeSeasonId) return;
+
+        await loadAnimeDetails(nextSeasonId);
+    };
+
 
     return (
         <div className="episode-modal-backdrop" onClick={handleBackdropClick}>
             <div className="episode-modal animate-fade-in">
                 <div className="episode-modal-header">
-                    <h2>{selectedAnime.title}</h2>
+                    <div className="episode-modal-header-copy">
+                        <h2>{animeDetails?.title || selectedAnime.title}</h2>
+                        {seasonOptions.length > 1 && (
+                            <div className="episode-modal-season-selector">
+                                <label htmlFor="episode-modal-season-select" className="episode-modal-season-label">
+                                    Temporada
+                                </label>
+                                <div className="episode-modal-season-select-wrap">
+                                    <select
+                                        id="episode-modal-season-select"
+                                        className="episode-modal-season-select"
+                                        value={activeSeasonId}
+                                        onChange={handleSeasonChange}
+                                    >
+                                        {seasonOptions.map((season) => (
+                                            <option key={season.id} value={season.id}>
+                                                {formatSeasonOption(season)}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <ChevronDown size={18} className="episode-modal-season-chevron" />
+                                </div>
+                            </div>
+                        )}
+                    </div>
                     <button className="episode-modal-close" onClick={closeEpisodeModal}>
                         <X size={24} />
                     </button>
@@ -191,7 +248,7 @@ function EpisodeModal() {
 
                                     <div className={`episode-modal-episodes-${viewMode}`}>
                                         {animeDetails.episodes?.map((episode) => {
-                                            const isWatched = watchedEpisodesService.isWatched(selectedAnime.slug || selectedAnime.id, episode.number);
+                                            const isWatched = watchedEpisodesService.isWatched(activeSeasonId || selectedAnime.slug || selectedAnime.id, episode.number);
                                             const isAvailable = availableEpisodes.size > 0 ? availableEpisodes.has(episode.number) : true;
 
                                             return (
