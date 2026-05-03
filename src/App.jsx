@@ -29,8 +29,8 @@ function App() {
   };
 
   return (
-    <AnimeProvider>
-      <Router>
+    <Router>
+      <AnimeProvider>
         <ScrollToTop />
         <EpisodeModal />
         <div className="app">
@@ -66,8 +66,8 @@ function App() {
             </main>
           </div>
         </div>
-      </Router>
-    </AnimeProvider>
+      </AnimeProvider>
+    </Router>
   );
 }
 
